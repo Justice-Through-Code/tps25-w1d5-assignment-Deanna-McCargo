@@ -48,19 +48,38 @@ def get_all_breeds():
 def get_random_image(breed):
     """GET request to fetch a random image from a breed."""
     # TODO: Make a request to https://dog.ceo/api/breed/{breed}/images/random
+    try:
+        response = requests.get("https://dog.ceo/api/breed/{breed}/images/random")
+        data = response.json()
+        return data["message"]
+    except requests.exceptions.RequestException:
+        print("Error: Could not fetch a random image from API")
+        return {}
+       
     # TODO: Return the image URL or handle errors
-    pass
+    
 
 def get_random_sub_breed_image(breed, sub_breed):
     """GET request to fetch a random image from a sub-breed."""
     # TODO: Make a request to https://dog.ceo/api/breed/{breed}/{sub_breed}/images/random
     # TODO: Return the image URL or handle errors
-    pass
+    try: 
+        response = requests.get("https://dog.ceo/api/breed/{breed}/{sub_breed}/images/random")
+        response.raise_for_status()
+        data = response.json()
+        return data["message"]
+    except requests.exceptions.RequestException:
+        print("Error: Could not fetch random image from API.")
+        return {}
+
+    
 
 def show_breeds(breeds_dict):
     """Prints all available breeds 5 per line."""
     # TODO: Print all breeds (sorted), 5 per line
-    pass
+    breed_list = sorted(breeds_dict.keys())
+    for i in range(0, len(breed_list), 5):
+        print(" | ".join(breed_list[i:i+5]))
 
 def main():
     while True:
